@@ -207,6 +207,9 @@ const JourneyMap = () => {
             <div className="text-8xl mb-6 animate-bounce">🍕</div>
             <h1 className="text-5xl md:text-6xl font-bold text-gray-800 mb-4">Pizzeria A CASA</h1>
             <p className="text-2xl text-gray-600 mb-2">Customer Experience Analysis</p>
+            <p className="text-2xl text-gray-600 mb-2">By</p>
+            <p className="text-2xl text-gray-800 mb-2 font-bold"><a href='https://jose-zapata.com/' target="_blank" rel="noopener noreferrer">Jose Zapata ↗</a></p>
+            <br />
             <p className="text-lg text-gray-500">Select a persona to explore their journey</p>
           </div>
 
@@ -216,9 +219,9 @@ const JourneyMap = () => {
               <button
                 key={persona.id}
                 onClick={() => setSelectedPersona(persona.id)}
-                className="group relative overflow-hidden rounded-3xl p-8 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-xl"
+                className="group relative overflow-hidden rounded-3xl p-8 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl shadow-xl will-change-transform"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${persona.color} opacity-90 group-hover:opacity-100 transition-opacity`}></div>
+                <div className={`absolute inset-0 bg-gradient-to-br ${persona.color} opacity-90 group-hover:opacity-100 transition-opacity rounded-3xl`}></div>
                 <div className="relative text-white text-center">
                   <div className="w-32 h-32 mx-auto mb-4 rounded-full overflow-hidden bg-white shadow-lg transform group-hover:scale-110 transition-transform">
                     <img src={persona.image} alt={persona.name} className="w-full h-full object-cover" />
@@ -247,12 +250,14 @@ const JourneyMap = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white py-8 px-6 shadow-xl">
+      <div className="bg-gradient-to-r from-orange-600 to-red-600 text-white py-8 px-6 shadow-xl" >
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-6">
-            <div className="text-6xl mb-3">🍕</div>
-            <h1 className="text-4xl font-bold mb-2">Pizzeria A CASA</h1>
-            <p className="text-xl opacity-90">Customer Experience Analysis</p>
+            <button onClick={() => setSelectedPersona(null)}>
+              <div className="text-6xl mb-3">🍕</div>
+              <h1 className="text-4xl font-bold mb-2">Pizzeria A CASA</h1>
+              <p className="text-xl opacity-90">Customer Experience Analysis</p>
+            </button>
           </div>
         </div>
       </div>
@@ -379,10 +384,10 @@ const JourneyMap = () => {
             {/* Connection Line */}
             <div className="hidden lg:block absolute top-24 left-0 right-0 h-1 bg-gradient-to-r from-amber-300 via-orange-400 to-red-400 mx-32"></div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:items-stretch">
               {selectedPersonaData.stages.map((stage, idx) => {
                 return (
-                  <div key={idx} className="relative">
+                  <div key={idx} className="relative flex flex-col">
                     {/* Stage Number Circle */}
                     <div className="flex justify-center mb-4">
                       <div className={`relative z-10 w-20 h-20 rounded-full bg-gradient-to-br ${selectedPersonaData.color} shadow-lg flex items-center justify-center`}>
@@ -391,63 +396,67 @@ const JourneyMap = () => {
                     </div>
 
                     {/* Stage Card */}
-                    <div className={`bg-white rounded-2xl shadow-xl p-6 ${selectedPersonaData.borderColor} border-2 hover:shadow-2xl transition-all`}>
+                    <div className={`bg-white rounded-2xl shadow-xl p-6 ${selectedPersonaData.borderColor} border-2 hover:shadow-2xl transition-all flex-1 flex flex-col`}>
                       <div className="text-center mb-6">
                         <h3 className="text-2xl font-bold text-gray-800 mb-1">{stage.title}</h3>
                         <p className="text-sm text-gray-500 uppercase tracking-wide">{stage.subtitle}</p>
                       </div>
 
-                      {/* Actions */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Users size={18} className="text-orange-500" />
-                          <h4 className="font-bold text-gray-700 text-sm">Actions</h4>
+                      <div className="flex-1 flex flex-col">
+                        {/* Actions */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Users size={18} className="text-orange-500" />
+                            <h4 className="font-bold text-gray-700 text-sm">Actions</h4>
+                          </div>
+                          <ul className="space-y-2">
+                            {stage.actions.map((action, i) => (
+                              <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                                <span className="text-orange-400 mt-1">▸</span>
+                                <span>{action}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                        <ul className="space-y-2">
-                          {stage.actions.map((action, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
-                              <span className="text-orange-400 mt-1">▸</span>
-                              <span>{action}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
 
-                      {/* Touchpoints */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Smartphone size={18} className="text-blue-500" />
-                          <h4 className="font-bold text-gray-700 text-sm">Touchpoints</h4>
+                        {/* Touchpoints */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Smartphone size={18} className="text-blue-500" />
+                            <h4 className="font-bold text-gray-700 text-sm">Touchpoints</h4>
+                          </div>
+                          <div className="flex flex-wrap gap-2">
+                            {stage.touchpoints.map((tp, i) => (
+                              <span key={i} className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
+                                {tp}
+                              </span>
+                            ))}
+                          </div>
                         </div>
-                        <div className="flex flex-wrap gap-2">
-                          {stage.touchpoints.map((tp, i) => (
-                            <span key={i} className="inline-block bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-xs font-medium border border-blue-200">
-                              {tp}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
 
-                      {/* Emotions */}
-                      <div className="mb-6">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Heart size={18} className="text-rose-500" />
-                          <h4 className="font-bold text-gray-700 text-sm">Emotional Journey</h4>
+                        {/* Emotions */}
+                        <div className="mb-6">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Heart size={18} className="text-rose-500" />
+                            <h4 className="font-bold text-gray-700 text-sm">Emotional Journey</h4>
+                          </div>
+                          <div className={`text-center py-3 px-4 rounded-lg bg-gradient-to-r ${selectedPersonaData.bgColor} ${selectedPersonaData.borderColor} border`}>
+                            <p className={`font-bold text-sm ${getEmotionColor(stage.emotions)}`}>
+                              {stage.emotionFlow}
+                            </p>
+                          </div>
                         </div>
-                        <div className={`text-center py-3 px-4 rounded-lg bg-gradient-to-r ${selectedPersonaData.bgColor} ${selectedPersonaData.borderColor} border`}>
-                          <p className={`font-bold text-sm ${getEmotionColor(stage.emotions)}`}>
-                            {stage.emotionFlow}
-                          </p>
-                        </div>
-                      </div>
 
-                      {/* Opportunities */}
-                      <div className={`bg-gradient-to-br ${selectedPersonaData.bgColor} rounded-xl p-4 border-2 ${selectedPersonaData.borderColor} border-dashed`}>
-                        <div className="flex items-start gap-2">
-                          <TrendingUp size={18} className="text-green-600 mt-1 flex-shrink-0" />
-                          <div>
-                            <h4 className="font-bold text-gray-800 text-xs mb-1">Opportunities</h4>
-                            <p className="text-xs text-gray-700 leading-relaxed">{stage.opportunities}</p>
+                        {/* Opportunities */}
+                        <div className="mt-auto">
+                          <div className={`bg-gradient-to-br ${selectedPersonaData.bgColor} rounded-xl p-4 border-2 ${selectedPersonaData.borderColor} border-dashed`}>
+                            <div className="flex items-start gap-2">
+                              <TrendingUp size={18} className="text-green-600 mt-1 flex-shrink-0" />
+                              <div>
+                                <h4 className="font-bold text-gray-800 text-xs mb-1">Opportunities</h4>
+                                <p className="text-xs text-gray-700 leading-relaxed">{stage.opportunities}</p>
+                              </div>
+                            </div>
                           </div>
                         </div>
                       </div>
